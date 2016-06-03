@@ -3,6 +3,7 @@ package com.yeti.testsocieteapi.tools;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,7 +17,6 @@ import java.net.URL;
  */
 public class QueryTask extends AsyncTask<String, Void, String> {
     private static final String DEBUG_TAG = "QueryTask";
-    private static final String API_KEY = "gejnsjm5oo5uoo0s8ckdg3009qj08lroc4hqmfeq001rq1m53b0";
 
     @Override
         protected String doInBackground(String... urls) {
@@ -68,11 +68,14 @@ public class QueryTask extends AsyncTask<String, Void, String> {
 
     // Reads an InputStream and converts it to a String.
     private String readIt(InputStream stream, int len) throws IOException, UnsupportedEncodingException {
-        Reader reader = null;
-        reader = new InputStreamReader(stream, "UTF-8");
-        char[] buffer = new char[len];
-        reader.read(buffer);
-        return new String(buffer);
+        BufferedReader reader = null;
+        reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+        StringBuilder total = new StringBuilder();
+        String line;
+        while((line = reader.readLine()) != null) {
+            total.append(line).append('\n');
+        }
+        return new String(total);
     }
 
 
